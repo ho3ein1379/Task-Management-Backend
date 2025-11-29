@@ -32,6 +32,10 @@ lerna-debug.log*
 *.db
 *.db-journal
 
+# uploads
+/uploads/*
+!uploads/.gitkeep
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
