@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { TaskPriority, TaskStatus } from '../task.entity';
 
@@ -27,4 +28,8 @@ export class CreateTaskDto {
   @IsDateString()
   @IsOptional()
   dueDate?: Date;
+
+  @IsUUID()
+  @IsOptional()
+  categoryId?: string;
 }
