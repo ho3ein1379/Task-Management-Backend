@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CategoriesModule } from './categories/categories.module';
 import { UploadModule } from './upload/upload.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UploadModule } from './upload/upload.module';
     TasksModule,
     CategoriesModule,
     UploadModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
