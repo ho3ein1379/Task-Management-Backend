@@ -17,6 +17,7 @@ import { CreateTaskDto } from './dto/create.task.dto';
 import { User } from '../users/user.entity';
 import { FilterTaskDto } from './dto/filter.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller('tasks')
 @UseGuards(JwtAuthGuard)
@@ -36,8 +37,12 @@ export class TasksController {
   @ApiResponse({ status: 200, description: 'Get all tasks successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  findAll(@CurrentUser() user: User, @Query() filterDto: FilterTaskDto) {
-    return this.tasksService.findAll(user.id, filterDto);
+  findAll(
+    @CurrentUser() user: User,
+    @Query() filterDto: FilterTaskDto,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.tasksService.findAll(user.id, filterDto, paginationDto);
   }
 
   @Get(':id')

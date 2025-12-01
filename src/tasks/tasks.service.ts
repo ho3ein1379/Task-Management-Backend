@@ -5,6 +5,7 @@ import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { FilterTaskDto } from './dto/filter.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Injectable()
 export class TasksService {
@@ -21,9 +22,19 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async findAll(userId: string, filterDto: FilterTaskDto): Promise<Task[]> {
+  async findAll(
+    userId: string,
+    filterDto: FilterTaskDto,
+    paginationDto: PaginationDto,
+  ): Promise<{
+    data: Task[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
     const { status, priority, search } = filterDto;
     const query = this.tasksRepository.createQueryBuilder('task');
+    const { page = 1, limit = 10 } = paginationDto;
 
     query.where('task.userId = :userId', { userId });
 
@@ -44,7 +55,18 @@ export class TasksService {
 
     query.orderBy('task.createdAt', 'DESC');
 
-    return query.getMany();
+    const total = await query.getCount();
+    const data = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .getMany();
+
+    return {
+      data,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findOne(id: string, userId: string): Promise<Task> {
