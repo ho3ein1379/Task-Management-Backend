@@ -5,9 +5,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as process from 'node:process';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { AllExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.useGlobalFilters(new AllExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({
