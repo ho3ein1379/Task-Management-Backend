@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -8,6 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import express from 'express';
 import { UploadService } from './upload.service';
 import { Attachment } from './attachment.entity';
@@ -20,6 +22,9 @@ export class UploadController {
 
   @Post('task/:taskId')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Upload file' })
+  @ApiResponse({ status: 200, description: 'Upload file successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Param('taskId') taskId: string,
@@ -29,6 +34,10 @@ export class UploadController {
   }
 
   @Get('task/:taskId')
+  @ApiOperation({ summary: 'Get task' })
+  @ApiResponse({ status: 200, description: 'Get task successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Not found' })
   getTasksAttachment(
     @Param('taskId') taskId: string,
     @CurrentUser() user: User,
@@ -37,6 +46,10 @@ export class UploadController {
   }
 
   @Get('download/:id')
+  @ApiOperation({ summary: 'Download file' })
+  @ApiResponse({ status: 200, description: 'Download file successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Not found' })
   async downloadFile(
     @Param('id') id: string,
     @CurrentUser() user: User,
@@ -47,7 +60,11 @@ export class UploadController {
     response.download(attachment.path, attachment.originalName);
   }
 
-  @Get(':id')
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete file' })
+  @ApiResponse({ status: 200, description: 'Delete file successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Not found' })
   async deleteAttachment(@Param('id') id: string, @CurrentUser() user: User) {
     return this.uploadService.deleteAttachment(id, user?.id);
   }
