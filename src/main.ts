@@ -25,7 +25,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
+    origin: process.env.CORS_ORIGIN || 'http://192.168.1.113:3001',
     credentials: true,
   });
 
@@ -61,7 +61,7 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: http://localhost:3000`);
-  console.log(`Swagger Documentation: http://localhost:3000/api-docs`);
+  console.log(`Application is running on: http://192.168.1.113:3000`);
+  console.log(`Swagger Documentation: http://192.168.1.113:3000/api-docs`);
 }
 bootstrap();
