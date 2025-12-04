@@ -15,9 +15,8 @@ import { CurrentUser } from '../common/decorators/current.user.decorator';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { User } from '../users/user.entity';
-import { FilterTaskDto } from './dto/filter.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
-import { PaginationDto } from '../common/dto/pagination.dto';
+import { GetTasksQueryDto } from './dto/get.tasks.query-dto';
 
 @Controller('tasks')
 @UseGuards(JwtAuthGuard)
@@ -37,12 +36,9 @@ export class TasksController {
   @ApiResponse({ status: 200, description: 'Get all tasks successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not found' })
-  findAll(
-    @CurrentUser() user: User,
-    @Query() filterDto: FilterTaskDto,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.tasksService.findAll(user.id, filterDto, paginationDto);
+  findAll(@CurrentUser() user: User, @Query() query: GetTasksQueryDto) {
+    const { page, limit, ...filterDto } = query;
+    return this.tasksService.findAll(user.id, filterDto, { page, limit });
   }
 
   @Get(':id')
