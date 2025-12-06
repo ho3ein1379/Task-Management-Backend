@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { Category } from './categories.entity';
 import { CreateCategoryDto } from './dto/create.category.dto';
 import { UpdateCategoryDto } from './dto/update.category.dto';
+import { Task } from '../tasks/task.entity';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private categoriesRepository: Repository<Category>,
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>,
   ) {}
 
   async create(
@@ -57,6 +60,9 @@ export class CategoriesService {
 
   async remove(id: string, userId: string): Promise<void> {
     const category = await this.findOne(id, userId);
+
+    await this.tasksRepository.update({ categoryId: id }, { categoryId: null });
+
     await this.categoriesRepository.remove(category);
   }
 

@@ -59,7 +59,7 @@ export class Task {
   category: Category;
 
   @Column({ nullable: true })
-  categoryId: string;
+  categoryId: string | null;
 
   @OneToMany(() => Attachment, (attachment) => attachment.task)
   attachments: Attachment[];

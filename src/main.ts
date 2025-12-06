@@ -24,8 +24,23 @@ async function bootstrap() {
     prefix: '/uploads/',
   });
 
-  app.enableCors({
+  /*  app.enableCors({
     origin: process.env.CORS_ORIGIN || 'http://192.168.1.113:3001',
+    credentials: true,
+  });*/
+
+  app.enableCors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      const allowed = /^http:\/\/(10\.|192\.168\.|172\.16\.)/;
+
+      if (allowed.test(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'), false);
+      }
+    },
     credentials: true,
   });
 
@@ -61,7 +76,7 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: http://192.168.1.113:3000`);
-  console.log(`Swagger Documentation: http://192.168.1.113:3000/api-docs`);
+  console.log(`Application is running on: http://10.252.150.183:3000`);
+  console.log(`Swagger Documentation: http://10.252.150.183:3000/api-docs`);
 }
 bootstrap();
