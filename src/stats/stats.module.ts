@@ -5,9 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Task } from '../tasks/task.entity';
 import { Category } from '../categories/categories.entity';
 import { Attachment } from '../upload/attachment.entity';
+import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Task, Category, Attachment])],
+  imports: [
+    TypeOrmModule.forFeature([Task, Category, Attachment]),
+    CategoriesModule,
+  ],
   controllers: [StatsController],
   providers: [StatsService],
 })
