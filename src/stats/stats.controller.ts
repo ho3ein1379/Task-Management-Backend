@@ -4,11 +4,15 @@ import { StatsService } from './stats.service';
 import { User } from '../users/user.entity';
 import { JwtAuthGuard } from '../common/guards/jwt.auth.guard';
 import { CurrentUser } from '../common/decorators/current.user.decorator';
+import { CategoriesService } from '../categories/categories.service';
 
 @Controller('stats')
 @UseGuards(JwtAuthGuard)
 export class StatsController {
-  constructor(private readonly statsService: StatsService) {}
+  constructor(
+    private readonly statsService: StatsService,
+    private readonly categoriesService: CategoriesService,
+  ) {}
 
   @Get('overview')
   @ApiOperation({ summary: 'Get Overview' })
@@ -25,7 +29,7 @@ export class StatsController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not found' })
   getCategoryStats(@CurrentUser() user: User) {
-    return this.statsService.getCategoryStats(user.id);
+    return this.categoriesService.getStats(user.id);
   }
 
   @Get('upcoming')
