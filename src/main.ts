@@ -35,7 +35,7 @@ async function bootstrap() {
 
       const allowed = /^http:\/\/(10\.|192\.168\.|172\.16\.)/;
 
-      if (allowed.test(origin)) {
+      if (allowed.test(origin) || process.env.CORS_ORIGIN) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'), false);
@@ -76,7 +76,7 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: http://10.252.150.183:3000`);
-  console.log(`Swagger Documentation: http://10.252.150.183:3000/api-docs`);
+  console.log(`Application is running on: http://192.168.1.113:3000`);
+  console.log(`Swagger Documentation: http://192.168.1.113:3000/api-docs`);
 }
 bootstrap();
