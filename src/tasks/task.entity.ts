@@ -59,6 +59,7 @@ export class Task {
   category: Category;
 
   @Column({ nullable: true })
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   categoryId: string | null;
 
   @OneToMany(() => Attachment, (attachment) => attachment.task)
