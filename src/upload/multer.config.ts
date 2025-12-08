@@ -22,6 +22,7 @@ export const multerConfig = {
     filename: (
       req: Request,
       file: Express.Multer.File,
+      // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
       callback: (error: Error | null, filename: string) => void,
     ) => {
       const uniqueName = `${uuidv4()}${extname(file.originalname)}`;
@@ -31,6 +32,7 @@ export const multerConfig = {
   fileFilter: (
     req: Request,
     file: Express.Multer.File,
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     callback: (error: Error | null, acceptFile: boolean) => void,
   ) => {
     if (!allowedMimeTypes.includes(file.mimetype)) {
