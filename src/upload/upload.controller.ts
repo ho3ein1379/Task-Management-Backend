@@ -15,13 +15,14 @@ import { UploadService } from './upload.service';
 import { Attachment } from './attachment.entity';
 import { User } from '../users/user.entity';
 import { CurrentUser } from '../common/decorators/current.user.decorator';
+import { cloudinaryStorage } from './cloudinary.storage';
 
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post('task/:taskId')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', { storage: cloudinaryStorage }))
   @ApiOperation({ summary: 'Upload file' })
   @ApiResponse({ status: 200, description: 'Upload file successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
