@@ -25,6 +25,7 @@ export const multerConfig = {
       // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
       callback: (error: Error | null, filename: string) => void,
     ) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const uniqueName = `${uuidv4()}${extname(file.originalname)}`;
       callback(null, uniqueName);
     },
